@@ -488,3 +488,222 @@
   resetBall();
   draw();
 })();
+
+/* Fullscreen deck: slides instead of native scroll (>=900px, js) */
+(function () {
+  "use strict";
+
+  var deck = document.querySelector(".deck");
+  if (!deck) return;
+  var slides = Array.prototype.slice.call(deck.children).filter(function (el) {
+    return el.tagName === "SECTION";
+  });
+  if (slides.length < 2) return;
+
+  var mqDesktop = window.matchMedia("(min-width: 900px)");
+  var mqReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var htmlEl = document.documentElement;
+  var header = document.getElementById("header");
+
+  var enabled = false;
+  var moving = false;
+  var index = 0;
+  var dotsWrap = null;
+  var touchStartY = 0;
+  var wheelAcc = 0;
+
+  function isActive() {
+    return mqDesktop.matches && !mqReduced.matches;
+  }
+
+  function setIndex(i) {
+    if (i === index || i < 0 || i >= slides.length) return;
+    index = i;
+    deck.style.transform = "translateY(-" + index * 100 + "%)";
+    if (header) {
+      header.classList.toggle("scrolled", index > 0);
+    }
+    updateDots();
+    var hashId = slides[index].id;
+    if (hashId && window.history && history.replaceState) {
+      history.replaceState(null, "", "#" + hashId);
+    }
+    moving = true;
+    window.setTimeout(function () {
+      moving = false;
+    }, 820);
+  }
+
+  function next() {
+    setIndex(index + 1);
+  }
+
+  function prev() {
+    setIndex(index - 1);
+  }
+
+  function updateDots() {
+    if (!dotsWrap) return;
+    var buttons = dotsWrap.children;
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.toggle("is-active", i === index);
+    }
+  }
+
+  function buildDots() {
+    if (dotsWrap) {
+      dotsWrap.parentNode.removeChild(dotsWrap);
+      dotsWrap = null;
+    }
+    dotsWrap = document.createElement("nav");
+    dotsWrap.className = "deck-dots";
+    dotsWrap.setAttribute("aria-label", "Secciones");
+    slides.forEach(function (slide, i) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      var heading = slide.querySelector("h1, h2");
+      btn.setAttribute(
+        "aria-label",
+        heading ? heading.textContent : "Sección " + (i + 1)
+      );
+      btn.addEventListener("click", function () {
+        setIndex(i);
+      });
+      dotsWrap.appendChild(btn);
+    });
+    document.body.appendChild(dotsWrap);
+    updateDots();
+  }
+
+  function enable() {
+    if (enabled) return;
+    enabled = true;
+    window.scrollTo(0, 0);
+    if (location.hash) {
+      var target = document.getElementById(location.hash.slice(1));
+      var i = slides.indexOf(target);
+      if (i !== -1) index = i;
+    }
+    htmlEl.classList.add("deck-on");
+    deck.style.transform = "translateY(-" + index * 100 + "%)";
+    if (header) header.classList.toggle("scrolled", index > 0);
+    buildDots();
+  }
+
+  function disable() {
+    if (!enabled) return;
+    enabled = false;
+    htmlEl.classList.remove("deck-on");
+    deck.style.transform = "";
+    if (dotsWrap && dotsWrap.parentNode) {
+      dotsWrap.parentNode.removeChild(dotsWrap);
+    }
+    dotsWrap = null;
+    if (header) header.classList.remove("scrolled");
+  }
+
+  window.addEventListener(
+    "wheel",
+    function (e) {
+      if (!enabled || moving) return;
+      var d = e.deltaY;
+      if (e.deltaMode === 1) d = d * 32;
+      else if (e.deltaMode === 2) d = d * window.innerHeight;
+      wheelAcc += d;
+      if (Math.abs(wheelAcc) < 70) return;
+      if (wheelAcc > 0) next();
+      else prev();
+      wheelAcc = 0;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "keydown",
+    function (e) {
+      if (!enabled) return;
+      var t = e.target;
+      if (
+        t &&
+        t.tagName &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.tagName === "SELECT" ||
+          (t.getAttribute && t.getAttribute("id") === "mini-game"))
+      ) {
+        return;
+      }
+      var k = e.key;
+      if (k === "ArrowDown" || k === "ArrowRight" || k === "PageDown" || k === " ") {
+        e.preventDefault();
+        next();
+      } else if (k === "ArrowUp" || k === "ArrowLeft" || k === "PageUp") {
+        e.preventDefault();
+        prev();
+      } else if (k === "Home") {
+        e.preventDefault();
+        setIndex(0);
+      } else if (k === "End") {
+        e.preventDefault();
+        setIndex(slides.length - 1);
+      }
+    },
+    { passive: false }
+  );
+
+  document.addEventListener("click", function (e) {
+    if (!enabled) return;
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute("href").slice(1);
+    var targetEl = document.getElementById(id);
+    if (!targetEl) return;
+    var i = slides.indexOf(targetEl);
+    if (i !== -1) {
+      e.preventDefault();
+      setIndex(i);
+    }
+  });
+
+  function touchHasOverflow(target) {
+    var sec = target && target.closest ? target.closest("section") : null;
+    return sec && sec.scrollHeight > sec.clientHeight + 2;
+  }
+
+  window.addEventListener(
+    "touchstart",
+    function (e) {
+      if (enabled) touchStartY = e.touches[0].clientY;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "touchmove",
+    function (e) {
+      if (!enabled || moving) return;
+      var target = e.touches[0].target;
+      if (target && target.closest && target.closest(".mini-game-court")) return;
+      if (touchHasOverflow(target)) return;
+      var dy = touchStartY - e.touches[0].clientY;
+      if (Math.abs(dy) < 46) return;
+      if (dy > 0) next();
+      else prev();
+      touchStartY = e.touches[0].clientY;
+    },
+    { passive: true }
+  );
+
+  function sync() {
+    if (isActive()) enable();
+    else disable();
+  }
+
+  if (mqDesktop.addEventListener) {
+    mqDesktop.addEventListener("change", sync);
+    mqReduced.addEventListener("change", sync);
+  } else {
+    window.addEventListener("resize", sync);
+  }
+  sync();
+})();
