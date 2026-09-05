@@ -7,7 +7,7 @@
   <meta name="description" content="Encuentra rivales, reserva pistas y mejora tu juego de pádel con PadelPro. Descarga la app gratis." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -17,10 +17,10 @@
     <div class="container header-inner">
       <a href="#hero" class="brand">
         <span class="brand-mark">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 2v20M6 8l6-3 6 3" />
-            <circle cx="8" cy="14" r="4" />
-            <circle cx="16" cy="14" r="4" />
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3.8 8.5h16.4M3.8 15.5h16.4" />
+            <path d="M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18" stroke-dasharray="2.2 3.4" />
           </svg>
         </span>
         <span class="brand-name">Padel<span class="accent">Pro</span></span>
@@ -42,10 +42,9 @@
   <section class="hero" id="hero">
     <div class="container hero-inner">
       <div class="hero-copy">
-        <span class="badge">★ 4.9 · Más de 10.000 jugadores</span>
-        <h1>Cada partido de pádel, <span class="accent">mejor</span> con PadelPro</h1>
-        <p>Encuentra rivales de tu nivel, reserva pistas en un clic y sigue tu progreso. El compañero perfecto para tu juego.</p>
-        <div class="hero-actions">
+        <h1 data-reveal>Cada partido merece un rival de tu nivel</h1>
+        <p data-reveal>Encuentra rivales de tu nivel, reserva pistas en un clic y sigue tu progreso. El compañero perfecto para tu juego.</p>
+        <div class="hero-actions" data-reveal>
           <a href="#descarga" class="btn btn-primary">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
@@ -54,9 +53,23 @@
           </a>
           <a href="#como-funciona" class="btn btn-ghost">Ver cómo funciona</a>
         </div>
-        <p class="hero-note">Gratis para empezar · Sin permanencia · Configúralo en 1 minuto</p>
+        <div class="scoreboard" data-reveal>
+          <div class="score"><strong data-count="4.9" data-decimals="1">4.9</strong><span>Valoración media</span></div>
+          <div class="score"><strong data-count="10000" data-suffix="+">10 000+</strong><span>Jugadores en partido</span></div>
+          <div class="score"><strong>1 min</strong><span>Para crear tu perfil</span></div>
+        </div>
       </div>
-      <div class="hero-visual" aria-hidden="true">
+      <div class="hero-visual" data-reveal="pop">
+        <svg class="hero-court" viewBox="0 0 420 620" fill="none" focusable="false">
+          <rect class="wall" x="8" y="8" width="404" height="604" rx="3" pathLength="1"></rect>
+          <rect class="surface" x="34" y="34" width="352" height="552" pathLength="1"></rect>
+          <line class="netline" x1="34" y1="320" x2="386" y2="320" pathLength="1"></line>
+          <path class="midline" d="M210 34 V586" pathLength="1"></path>
+          <line class="service" x1="34" y1="187" x2="386" y2="187" pathLength="1"></line>
+          <line class="service" x1="34" y1="453" x2="386" y2="453" pathLength="1"></line>
+          <text x="210" y="622">20 m</text>
+          <text x="22" y="326" transform="rotate(-90 22 326)">10 m</text>
+        </svg>
         <div class="phone">
           <div class="phone-notch"></div>
           <div class="phone-screen">
@@ -64,7 +77,7 @@
             <div class="mini-card">
               <div class="mini-card-top"><strong>Partido hoy · 19:00</strong><span>Pista 3</span></div>
               <div class="mini-score">6-4 · 6-3</div>
-              <div class="mini-bar"><span style="width:84%"></span></div>
+              <div class="mini-bar"><span data-w="84%"></span></div>
               <span class="mini-caption">¡Victoria! +12 puntos ELO</span>
             </div>
             <div class="mini-card">
@@ -72,9 +85,15 @@
               <div class="mini-row"><span>Carlos M.</span><span class="mini-check">Listo</span></div>
               <div class="mini-row"><span>Lucía R.</span><span class="mini-check">Confirmado</span></div>
             </div>
-            <div class="mini-card mini-chart">
-              <strong>Tu progreso</strong>
-              <div class="bars"><span style="height:40%"></span><span style="height:65%"></span><span style="height:50%"></span><span style="height:80%"></span><span style="height:70%"></span><span style="height:95%"></span></div>
+            <div class="mini-card mini-game">
+              <div class="mini-card-top"><strong>Peloteo</strong><span class="mini-game-score">0</span></div>
+              <div class="mini-game-court">
+                <canvas id="mini-game" width="292" height="210" tabindex="0" aria-label="Minijuego de pádel: mueve la pala con el ratón, el dedo o las flechas del teclado y mantén el peloteo sin que la bola caiga"></canvas>
+                <div class="mini-game-veil" aria-live="polite">
+                  <strong>PELOTEO</strong>
+                  <small>Desliza y toca para jugar</small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -86,53 +105,53 @@
   <!-- PROBLEMA -->
   <section class="problem" id="problema">
     <div class="container">
-      <h2 class="section-title">¿Te suena familiar?</h2>
+      <h2 class="section-title" data-reveal>¿Te suena familiar?</h2>
       <div class="problem-grid">
-        <div class="problem-item">
+        <div class="problem-item" data-reveal>
           <span class="p-icon">🤷</span>
           <p>Llegas a la pista y se cae el grupo de última hora.</p>
         </div>
-        <div class="problem-item">
+        <div class="problem-item" data-reveal>
           <span class="p-icon">📱</span>
           <p>Pierdes horas buscando rivales en grupos de WhatsApp.</p>
         </div>
-        <div class="problem-item">
+        <div class="problem-item" data-reveal>
           <span class="p-icon">🤔</span>
           <p>No sabes si de verdad estás mejorando semana a semana.</p>
         </div>
       </div>
-      <p class="problem-pivot">Deja de perder el tiempo. <strong>PadelPro lo resuelve.</strong></p>
+      <p class="problem-pivot" data-reveal>Deja de perder el tiempo. <strong>PadelPro lo resuelve.</strong></p>
     </div>
   </section>
 
   <!-- BENEFICIOS -->
   <section class="beneficios" id="beneficios">
     <div class="container">
-      <h2 class="section-title">Todo lo que necesitas en una sola app</h2>
-      <p class="section-sub">Diseñada para jugadores que quieren menos líos y más partidos.</p>
+      <h2 class="section-title" data-reveal>Todo lo que necesitas en una sola app</h2>
+      <p class="section-sub" data-reveal>Diseñada para jugadores que quieren menos líos y más partidos.</p>
       <div class="benefit-grid">
-        <article class="benefit-card">
+        <article class="benefit-card" data-reveal>
           <div class="benefit-icon">
             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
           </div>
           <h3>Rivales de tu nivel</h3>
           <p>Nuestro algoritmo te empareja con jugadores cercanos y de habilidad similar. Olvídate de partidos desequilibrados.</p>
         </article>
-        <article class="benefit-card">
+        <article class="benefit-card" data-reveal>
           <div class="benefit-icon">
             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
           </div>
           <h3>Reserva en un clic</h3>
           <p>Conecta con tu pista o club favorito y reserva huecos al instante, sin llamadas ni coordinaciones eternas.</p>
         </article>
-        <article class="benefit-card">
+        <article class="benefit-card" data-reveal>
           <div class="benefit-icon">
             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
           </div>
           <h3>Progreso real</h3>
           <p>Estadísticas, ELO y seguimiento de tus partidos. Mira cómo mejora tu juego partido a partido.</p>
         </article>
-        <article class="benefit-card">
+        <article class="benefit-card" data-reveal>
           <div class="benefit-icon">
             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
           </div>
@@ -146,19 +165,19 @@
   <!-- COMO FUNCIONA -->
   <section class="como" id="como-funciona">
     <div class="container">
-      <h2 class="section-title">Empieza en 3 pasos</h2>
+      <h2 class="section-title" data-reveal>Empieza en 3 pasos</h2>
       <div class="steps">
-        <div class="step">
+        <div class="step" data-reveal>
           <span class="step-num">1</span>
           <h3>Crea tu perfil</h3>
           <p>Indica tu nivel y tu zona. Solo te va a llevar un minuto.</p>
         </div>
-        <div class="step">
+        <div class="step" data-reveal>
           <span class="step-num">2</span>
           <h3>Busca rival o reserva</h3>
           <p>Elige partidos cerca de ti o reserva tu pista preferida.</p>
         </div>
-        <div class="step">
+        <div class="step" data-reveal>
           <span class="step-num">3</span>
           <h3>Juega y mejora</h3>
           <p>Registra tus resultados y mira cómo avanza tu juego.</p>
@@ -173,22 +192,22 @@
   <!-- TESTIMONIOS -->
   <section class="testimonios" id="testimonios">
     <div class="container">
-      <h2 class="section-title">Lo que dicen los jugadores</h2>
+      <h2 class="section-title" data-reveal>Lo que dicen los jugadores</h2>
       <div class="testimonial-grid">
-        <figure class="testimonial">
+        <figure class="testimonial" data-reveal>
           <div class="stars">★★★★★</div>
           <blockquote>“Encontré rivales de mi nivel en mi barrio en dos días. Ya no me quedo sin jugar.”</blockquote>
-          <figcaption><span class="avatar" style="--c:#26c281">C</span><span><strong>Carlos</strong><small>Nivel 3.2 · Madrid</small></span></figcaption>
+          <figcaption><span class="avatar" style="--c:#26c281">C</span><span><strong>Carlos</strong><small>Nivel 3.2 en Madrid</small></span></figcaption>
         </figure>
-        <figure class="testimonial">
+        <figure class="testimonial" data-reveal>
           <div class="stars">★★★★★</div>
           <blockquote>“Las estadísticas me engancharon. He mejorado un montón y lo veo reflejado.”</blockquote>
-          <figcaption><span class="avatar" style="--c:#3a8fff">L</span><span><strong>Lucía</strong><small>Nivel 2.8 · Valencia</small></span></figcaption>
+          <figcaption><span class="avatar" style="--c:#3a8fff">L</span><span><strong>Lucía</strong><small>Nivel 2.8 en Valencia</small></span></figcaption>
         </figure>
-        <figure class="testimonial">
+        <figure class="testimonial" data-reveal>
           <div class="stars">★★★★★</div>
           <blockquote>“Reservar la pista en un clic es un cambio enorme. La uso cada semana.”</blockquote>
-          <figcaption><span class="avatar" style="--c:#f6b93b">M</span><span><strong>Marc</strong><small>Nivel 4.0 · Barcelona</small></span></figcaption>
+          <figcaption><span class="avatar" style="--c:#2ee6a0">M</span><span><strong>Marc</strong><small>Nivel 4.0 en Barcelona</small></span></figcaption>
         </figure>
       </div>
     </div>
@@ -197,10 +216,10 @@
   <!-- OFERTA / PRECIO -->
   <section class="precio" id="precio">
     <div class="container">
-      <h2 class="section-title">Elige tu plan</h2>
-      <p class="section-sub">Empieza gratis y sube cuando quieras. Sin permanencia.</p>
+      <h2 class="section-title" data-reveal>Elige tu plan</h2>
+      <p class="section-sub" data-reveal>Empieza gratis y sube cuando quieras. Sin permanencia.</p>
       <div class="pricing-grid">
-        <div class="plan">
+        <div class="plan" data-reveal>
           <h3>Gratis</h3>
           <div class="price"><span class="amount">0 €</span><span class="period">/mes</span></div>
           <ul>
@@ -211,7 +230,7 @@
           </ul>
           <a href="#descarga" class="btn btn-ghost">Empezar gratis</a>
         </div>
-        <div class="plan featured">
+        <div class="plan featured" data-reveal>
           <span class="plan-tag">Más popular</span>
           <h3>Pro</h3>
           <div class="price"><span class="amount">4,99 €</span><span class="period">/mes</span></div>
@@ -231,25 +250,25 @@
   <!-- FAQ -->
   <section class="faq" id="faq">
     <div class="container">
-      <h2 class="section-title">Preguntas frecuentes</h2>
+      <h2 class="section-title" data-reveal>Preguntas frecuentes</h2>
       <div class="faq-list">
-        <details class="faq-item">
+        <details class="faq-item" data-reveal>
           <summary>¿En qué dispositivos puedo usar PadelPro?</summary>
           <p>Tanto en iOS como en Android. Descarga la app desde App Store o Google Play.</p>
         </details>
-        <details class="faq-item">
+        <details class="faq-item" data-reveal>
           <summary>¿Necesito ser un jugador avanzado?</summary>
           <p>No. PadelPro está pensado para todos los niveles, desde principiantes hasta competición. El algoritmo te empareja según tu nivel real.</p>
         </details>
-        <details class="faq-item">
+        <details class="faq-item" data-reveal>
           <summary>¿Puedo cancelar el plan Pro cuando quiera?</summary>
           <p>Sí, sin permanencia. Cancela cuando quieras desde la app y seguirás usando el plan Gratis.</p>
         </details>
-        <details class="faq-item">
+        <details class="faq-item" data-reveal>
           <summary>¿La app está disponible en mi zona?</summary>
           <p>Estamos en expansión constante. Crea tu perfil y te avisaremos en cuanto haya actividad cerca de ti.</p>
         </details>
-        <details class="faq-item">
+        <details class="faq-item" data-reveal>
           <summary>¿Cómo contacto con soporte?</summary>
           <p>Por WhatsApp o desde el correo soporte@padelpro.es. Respondemos en menos de 24h.</p>
         </details>
@@ -259,7 +278,7 @@
 
   <!-- CTA FINAL -->
   <section class="descarga" id="descarga">
-    <div class="container descarga-inner">
+    <div class="container descarga-inner" data-reveal="pop">
       <h2>¿Listo para jugar más y mejor?</h2>
       <p>Únete a miles de jugadores que ya tienen a PadelPro en su equipo.</p>
       <div class="store-buttons">
@@ -272,20 +291,21 @@
           <span><small>Disponible en</small><strong>Google Play</strong></span>
         </a>
       </div>
-      <p class="hero-note">· Gratis para empezar · Sin tarjeta · Cancelas cuando quieras ·</p>
+      <p class="hero-note">Gratis para empezar, sin tarjeta y sin permanencia. Cancela cuando quieras.</p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="container footer-inner">
+    <div class="container footer-inner" data-reveal>
       <div class="footer-brand">
         <a href="#hero" class="brand">
           <span class="brand-mark">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 2v20M6 8l6-3 6 3" />
-              <circle cx="8" cy="14" r="4" /><circle cx="16" cy="14" r="4" />
-            </svg>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3.8 8.5h16.4M3.8 15.5h16.4" />
+            <path d="M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18" stroke-dasharray="2.2 3.4" />
+          </svg>
           </span>
           <span class="brand-name">Padel<span class="accent">Pro</span></span>
         </a>
