@@ -1494,23 +1494,60 @@ html.deck-on body {
 }
 
 html.deck-on .deck {
+  position: relative;
   height: 100%;
-  will-change: transform;
-  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
 }
 
 html.deck-on .deck > section {
-  position: relative;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   display: flex;
-  align-items: center;
+  align-items: safe center;
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(9%) scale(0.955);
+  filter: blur(10px);
+  transition:
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.85s ease,
+    filter 0.85s ease,
+    visibility 0s linear 0.9s;
 }
 
 html.deck-on .deck > section::-webkit-scrollbar {
   display: none;
+}
+
+html.deck-on .deck > section.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  filter: none;
+  z-index: 5;
+  pointer-events: auto;
+  transition:
+    transform 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.7s ease,
+    filter 0.7s ease,
+    visibility 0s;
+}
+
+html.deck-on .deck > section.is-out {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-9%) scale(1.02);
+  filter: blur(5px);
+  z-index: 4;
+  pointer-events: none;
+  transition:
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.85s ease,
+    filter 0.85s ease,
+    visibility 0s linear 1s;
 }
 
 html.deck-on .deck > section > .container,

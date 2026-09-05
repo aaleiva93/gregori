@@ -87,8 +87,29 @@
     });
   }
 
+  var deckMode =
+    window.matchMedia("(min-width: 900px)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function revealIn(scope) {
+    var els = scope.querySelectorAll("[data-reveal]");
+    if (!els.length) return;
+    els.forEach(function (el) {
+      el.classList.remove("visible");
+    });
+    void scope.offsetWidth;
+    els.forEach(function (el) {
+      el.classList.add("visible");
+      var counts = el.querySelectorAll("[data-count]");
+      if (counts.length) counts.forEach(animateCount);
+    });
+  }
+  window.__ppReveal = revealIn;
+
   var revealEls = document.querySelectorAll("[data-reveal]");
-  if ("IntersectionObserver" in window && revealEls.length) {
+  if (deckMode) {
+    /* reveals are driven by the deck module per active slide */
+  } else if ("IntersectionObserver" in window && revealEls.length) {
     var observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -474,7 +495,10 @@
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(
       function (entries) {
-        isVisible = entries[0].isIntersecting;
+        var el = court || canvas;
+        var sec = el.closest ? el.closest("section") : null;
+        var active = !sec || !sec.classList.contains("is-active");
+        isVisible = entries[0].isIntersecting && active;
         if (isVisible) start();
         else stop();
       },
@@ -516,10 +540,26 @@
     return mqDesktop.matches && !mqReduced.matches;
   }
 
-  function setIndex(i) {
+  function applyClasses(dir) {
+    slides.forEach(function (slide, i) {
+      slide.classList.remove("is-active", "is-out");
+      if (i === index) {
+        slide.classList.add("is-active");
+      } else if (dir > 0 && i === index - 1) {
+        slide.classList.add("is-out");
+      }
+    });
+  }
+
+  function revealSlide(slide) {
+    if (window.__ppReveal) window.__ppReveal(slide);
+  }
+
+  function setIndex(i, dir) {
     if (i === index || i < 0 || i >= slides.length) return;
     index = i;
-    deck.style.transform = "translateY(-" + index * 100 + "%)";
+    applyClasses(dir);
+    revealSlide(slides[i]);
     if (header) {
       header.classList.toggle("scrolled", index > 0);
     }
@@ -531,15 +571,15 @@
     moving = true;
     window.setTimeout(function () {
       moving = false;
-    }, 820);
+    }, 1150);
   }
 
   function next() {
-    setIndex(index + 1);
+    setIndex(index + 1, 1);
   }
 
   function prev() {
-    setIndex(index - 1);
+    setIndex(index - 1, -1);
   }
 
   function updateDots() {
@@ -567,7 +607,7 @@
         heading ? heading.textContent : "Sección " + (i + 1)
       );
       btn.addEventListener("click", function () {
-        setIndex(i);
+        setIndex(i, i > index ? 1 : -1);
       });
       dotsWrap.appendChild(btn);
     });
@@ -585,7 +625,8 @@
       if (i !== -1) index = i;
     }
     htmlEl.classList.add("deck-on");
-    deck.style.transform = "translateY(-" + index * 100 + "%)";
+    applyClasses(0);
+    revealSlide(slides[index]);
     if (header) header.classList.toggle("scrolled", index > 0);
     buildDots();
   }
@@ -594,7 +635,9 @@
     if (!enabled) return;
     enabled = false;
     htmlEl.classList.remove("deck-on");
-    deck.style.transform = "";
+    slides.forEach(function (slide) {
+      slide.classList.remove("is-active", "is-out");
+    });
     if (dotsWrap && dotsWrap.parentNode) {
       dotsWrap.parentNode.removeChild(dotsWrap);
     }
@@ -661,7 +704,7 @@
     var i = slides.indexOf(targetEl);
     if (i !== -1) {
       e.preventDefault();
-      setIndex(i);
+      setIndex(i, i > index ? 1 : -1);
     }
   });
 
