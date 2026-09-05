@@ -12,8 +12,8 @@ Una landing en español, en una sola página, con un toque festivo que la hace d
 
 - **Hero con pista de pádel animada** — el dibujo del court se traza sólo y el teléfono flota con una app en miniatura.
 - **Minijuego "Peloteo" jugable dentro del teléfono** — señala, desliza o usa el teclado (flechas / A-D) para mover la pala y mantener el peloteo. Cada devolución acelera la bola, y tu récord se guarda en el navegador.
-- **Bola grande de entrada** — al cargar, una pelota cruza la pantalla rebotando… y la pantalla tiembla con ella.
-- Contadores animados, reveal por scroll, FAQ desplegable, menú móvil y soporte completo de `prefers-reduced-motion` (desactiva el peloteo, la bola y las animaciones).
+- **Navegación a pantalla completa en escritorio** — cada sección ocupa toda la vista y las transiciones se entremezclan con crossfade; en móvil el scroll es el de siempre.
+- Contadores animados, reveal por scroll, FAQ desplegable, menú móvil y soporte completo de `prefers-reduced-motion`.
 
 ## Stack
 

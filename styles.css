@@ -1266,59 +1266,6 @@ section {
   to { opacity: 1; transform: none; }
 }
 
-/* big padel ball crossing the viewport once on load */
-.big-ball {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 2;
-  width: min(30vw, 260px);
-  aspect-ratio: 1 / 1;
-  pointer-events: none;
-  opacity: 0;
-  filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.4));
-  animation: bigBallCross 4.6s linear 0.9s 1 forwards;
-}
-
-.big-ball svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-@keyframes bigBallCross {
-  0% {
-    transform: translate(110vw, 6vh) rotate(0deg) scale(1);
-    opacity: 0;
-  }
-  6% { opacity: 0.92; }
-  28% { transform: translate(72vw, 54vh) rotate(150deg) scale(1); }
-  34% { transform: translate(66vw, 49vh) rotate(180deg) scale(1.14, 0.86); }
-  46% { transform: translate(46vw, 8vh) rotate(270deg) scale(1); }
-  56% { transform: translate(32vw, 70vh) rotate(340deg) scale(1); }
-  62% { transform: translate(27vw, 64vh) rotate(370deg) scale(1.14, 0.86); }
-  74% { transform: translate(12vw, 6vh) rotate(460deg) scale(1); }
-  88% { transform: translate(-8vw, 42vh) rotate(540deg) scale(1); }
-  100% {
-    transform: translate(-30vw, 34vh) rotate(600deg) scale(1);
-    opacity: 0;
-  }
-}
-
-@keyframes screenShake {
-  0%, 100% { transform: translate(0, 0); }
-  15% { transform: translate(-6px, 2px); }
-  30% { transform: translate(5px, -3px); }
-  45% { transform: translate(-4px, -2px); }
-  60% { transform: translate(4px, 3px); }
-  75% { transform: translate(-2px, 1px); }
-  90% { transform: translate(2px, -1px); }
-}
-
-body.is-shaking {
-  animation: screenShake 0.42s ease;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

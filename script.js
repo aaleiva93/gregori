@@ -136,45 +136,6 @@
   setTimeout(animatePhoneBars, 200);
 })();
 
-/* Big padel ball crossing the viewport once on load */
-(function () {
-  "use strict";
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  var el = document.createElement("div");
-  el.className = "big-ball";
-  el.setAttribute("aria-hidden", "true");
-  el.innerHTML =
-    '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-    "<defs><radialGradient id=\"bbg\" cx=\"35%\" cy=\"30%\" r=\"80%\">" +
-    '<stop offset="0%" stop-color="#7df2be"/>' +
-    '<stop offset="55%" stop-color="#2ee6a0"/>' +
-    '<stop offset="100%" stop-color="#14b576"/>' +
-    "</radialGradient></defs>" +
-    '<circle cx="12" cy="12" r="10.5" fill="url(#bbg)"/>' +
-    '<g fill="none" stroke="rgba(11,17,23,0.32)" stroke-width="1" stroke-linecap="round">' +
-    '<path d="M2.2 9h19.6M2.2 15h19.6"/>' +
-    '<path d="M12 2.2a10 10 0 0 1 0 19.6M12 2.2a10 10 0 0 0 0 19.6" stroke-dasharray="2.6 3.8"/>' +
-    "</g></svg>";
-  document.body.appendChild(el);
-
-  function removeIt() {
-    if (el && el.parentNode) el.parentNode.removeChild(el);
-  }
-  el.addEventListener("animationend", removeIt);
-  window.setTimeout(removeIt, 9000);
-
-  function shake() {
-    document.body.classList.add("is-shaking");
-    window.setTimeout(function () {
-      document.body.classList.remove("is-shaking");
-    }, 440);
-  }
-  window.setTimeout(shake, 2450);
-  window.setTimeout(shake, 3750);
-})();
-
 /* Peloteo: minipadel game inside the hero phone */
 (function () {
   "use strict";
@@ -424,25 +385,26 @@
   }
 
   function frame(ts) {
-    if (!running) return;
-    var dt = Math.min(ts - lastTs, 40);
-    lastTs = ts;
-    update(dt);
-    draw();
+    if (running && isVisible) {
+      var dt = Math.min(ts - lastTs, 40);
+      lastTs = ts;
+      update(dt);
+      draw();
+    } else if (running) {
+      lastTs = ts;
+    }
     rafId = requestAnimationFrame(frame);
   }
 
   function start() {
-    if (running) return;
     running = true;
     lastTs = performance.now();
-    rafId = requestAnimationFrame(frame);
+    if (!rafId) rafId = requestAnimationFrame(frame);
     draw();
   }
 
   function stop() {
     running = false;
-    if (rafId) cancelAnimationFrame(rafId);
   }
 
   function pointerX(e) {
@@ -511,6 +473,7 @@
 
   resetBall();
   draw();
+  start();
 })();
 
 /* Fullscreen deck: slides instead of native scroll (>=900px, js) */
