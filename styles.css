@@ -1132,6 +1132,28 @@ section {
   align-items: flex-end;
 }
 
+.footer-github {
+  grid-column: 1 / -1;
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 22px;
+  border: 1px solid var(--hair-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.footer-github:hover {
+  border-color: var(--ball);
+  color: var(--ball);
+  transform: translateY(-2px);
+}
+
 .contact-wa {
   display: inline-block;
   font-weight: 600;
