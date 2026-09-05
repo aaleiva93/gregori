@@ -459,7 +459,7 @@
       function (entries) {
         var el = court || canvas;
         var sec = el.closest ? el.closest("section") : null;
-        var active = !sec || !sec.classList.contains("is-active");
+        var active = !sec || sec.classList.contains("is-active");
         isVisible = entries[0].isIntersecting && active;
         if (isVisible) start();
         else stop();
