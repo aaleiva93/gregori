@@ -1446,7 +1446,8 @@ html.deck-on .deck {
   overflow: hidden;
 }
 
-html.deck-on .deck > section {
+html.deck-on .deck > section,
+html.deck-on .deck > footer {
   position: absolute;
   inset: 0;
   display: flex;
@@ -1465,11 +1466,13 @@ html.deck-on .deck > section {
     visibility 0s linear 0.9s;
 }
 
-html.deck-on .deck > section::-webkit-scrollbar {
+html.deck-on .deck > section::-webkit-scrollbar,
+html.deck-on .deck > footer::-webkit-scrollbar {
   display: none;
 }
 
-html.deck-on .deck > section.is-active {
+html.deck-on .deck > section.is-active,
+html.deck-on .deck > footer.is-active {
   opacity: 1;
   visibility: visible;
   transform: none;
@@ -1483,7 +1486,8 @@ html.deck-on .deck > section.is-active {
     visibility 0s;
 }
 
-html.deck-on .deck > section.is-out {
+html.deck-on .deck > section.is-out,
+html.deck-on .deck > footer.is-out {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-9%) scale(1.02);
@@ -1498,12 +1502,13 @@ html.deck-on .deck > section.is-out {
 }
 
 html.deck-on .deck > section > .container,
-html.deck-on .deck > section > .hero-inner {
+html.deck-on .deck > section > .hero-inner,
+html.deck-on .deck > footer > .container {
   width: 100%;
   margin: auto;
 }
 
-html.deck-on .deck > section.footer {
+html.deck-on .deck > footer {
   flex-direction: column;
   align-items: stretch;
   justify-content: center;

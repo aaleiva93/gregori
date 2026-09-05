@@ -483,7 +483,7 @@
   var deck = document.querySelector(".deck");
   if (!deck) return;
   var slides = Array.prototype.slice.call(deck.children).filter(function (el) {
-    return el.tagName === "SECTION";
+    return el.tagName === "SECTION" || el.tagName === "FOOTER";
   });
   if (slides.length < 2) return;
 
